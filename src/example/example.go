@@ -8,14 +8,21 @@ import (
 )
 
 func main() {
-	logger, err := ylog.NewLogger("log/", "example", "debug", 0)
+	logger, err := ylog.NewFileLogger("log/", "example", ylog.StringToLogLevel("debug"), 0)
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
+	consoleLogger, err := ylog.NewConsoleLogger(ylog.StringToLogLevel("info"), 0)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	logger.AddLogChain(consoleLogger)
 	i := 0
-	for {
-		logger.Fatal("%d", i)
+	for i < 100 {
+		logger.Info("simple information %d", i)
+		logger.Debug("much more complex logs %d, %d", i, 2*i)
+		logger.Trace("trace should not printed in debug level %d", i)
 		i++
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond * 200)
 	}
 }

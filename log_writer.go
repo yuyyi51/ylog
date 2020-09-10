@@ -15,17 +15,13 @@ type logWriter struct {
 	objectQueue chan *logObject
 }
 
-func newLogWriter(path, prefix string) (*logWriter, error) {
-	fileWriter, err := newFileWriter(path, prefix)
-	if err != nil {
-		return nil, err
-	}
+func newLogWriter(writer io.Writer) *logWriter {
 	return &logWriter{
-		writer:      fileWriter,
+		writer:      writer,
 		buffer:      &bytes.Buffer{},
 		objectQueue: make(chan *logObject, 10000),
 		writerMux:   new(sync.Mutex),
-	}, nil
+	}
 }
 
 func (l *logWriter) startRun() {
