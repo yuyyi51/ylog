@@ -1,6 +1,8 @@
 package ylog
 
-import "time"
+import (
+	"time"
+)
 
 type logObject struct {
 	file    string
@@ -9,10 +11,4 @@ type logObject struct {
 	line    int
 	format  string
 	args    []interface{}
-}
-
-var objQueue chan *logObject
-
-func init() {
-	objQueue = make(chan *logObject, 10000)
 }

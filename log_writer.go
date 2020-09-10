@@ -32,7 +32,7 @@ func (l *logWriter) guardRun() {
 	defer func() {
 		err := recover()
 		if err != nil {
-			// exit abnormal, restart
+			// Exit abnormal, restart
 			go l.guardRun()
 		}
 	}()

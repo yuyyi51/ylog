@@ -140,9 +140,6 @@ func (l *Logger) log(format string, level LogLevel, args ...interface{}) {
 	case l.logWriter.objectQueue <- obj:
 	default:
 	}
-
-	//format = fmt.Sprintf("%s %s %s:%d %s\n", time.Now().Format(time.RFC3339Nano), LogLevelToString(level), file, line, format)
-	//fmt.Printf(format, args...)
 }
 
 func (l *Logger) logSync(format string, level LogLevel, args ...interface{}) {
@@ -222,7 +219,7 @@ func (l *Logger) Panic(format string, args ...interface{}) {
 		l.logSync(format, LogLevelPanic, args...)
 	}
 	panic(fmt.Sprintf(format, args...))
-	// won't effect to log chain, for panic will stop this function
+	// Won't effect to log chain, for panic will stop this function
 	// and maybe whole process
 }
 
@@ -231,5 +228,5 @@ func (l *Logger) Fatal(format string, args ...interface{}) {
 		l.logSync(format, LogLevelFatal, args...)
 	}
 	os.Exit(-1)
-	// won't effect to log chain, for fatal will stop process
+	// Won't effect to log chain, for fatal will stop process
 }

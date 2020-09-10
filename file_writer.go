@@ -7,32 +7,32 @@ import (
 	"time"
 )
 
-type DateInfo struct {
+type dateInfo struct {
 	Year  int
 	Month time.Month
 	Day   int
 	Hour  int
 }
 
-func (info *DateInfo) Match(now time.Time) bool {
+func (info *dateInfo) Match(now time.Time) bool {
 	return now.Hour() == info.Hour &&
 		now.Day() == info.Day &&
 		now.Month() == info.Month &&
 		now.Year() == info.Year
 }
 
-func (info *DateInfo) MatchNow() bool {
+func (info *dateInfo) MatchNow() bool {
 	return info.Match(time.Now())
 }
 
-func (info *DateInfo) Update(new time.Time) {
+func (info *dateInfo) Update(new time.Time) {
 	info.Year = new.Year()
 	info.Month = new.Month()
 	info.Day = new.Day()
 	info.Hour = new.Hour()
 }
 
-func (info *DateInfo) UpdateNow() {
+func (info *dateInfo) UpdateNow() {
 	info.Update(time.Now())
 }
 
@@ -40,7 +40,7 @@ type fileWriter struct {
 	path            string
 	prefix          string
 	currentFile     *os.File
-	currentDateInfo DateInfo
+	currentDateInfo dateInfo
 }
 
 func newFileWriter(path, prefix string) (*fileWriter, error) {
