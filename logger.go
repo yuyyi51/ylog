@@ -21,6 +21,7 @@ type ILogger interface {
 	Panic(format string, args ...interface{})
 	Fatal(format string, args ...interface{})
 	AddLogChain(logger ILogger)
+	AddSkipLevel()
 }
 
 type Logger struct {
@@ -118,11 +119,16 @@ func NewWriterLogger(w io.Writer, level LogLevel, skip int) (ILogger, error) {
 }
 
 func (l *Logger) AddLogChain(next ILogger) {
+	next.AddSkipLevel()
 	if l.chain == nil {
 		l.chain = next
 	} else {
 		l.chain.AddLogChain(next)
 	}
+}
+
+func (l *Logger) AddSkipLevel() {
+	l.skipStackLevel++
 }
 
 func (l *Logger) log(format string, level LogLevel, args ...interface{}) {
@@ -139,6 +145,7 @@ func (l *Logger) log(format string, level LogLevel, args ...interface{}) {
 	select {
 	case l.logWriter.objectQueue <- obj:
 	default:
+		fmt.Printf("Ylog write logs fail, object queue is full")
 	}
 }
 
